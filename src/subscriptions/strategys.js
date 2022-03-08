@@ -1,25 +1,45 @@
 import {Strategy as LocalStrategy} from "passport-local";
 import passport from "passport";
+import uniqid from "uniqid";
 import connection from "../database/connection.js";
 import dao from "../database/dao.js";
 
-const signin = passport.use("signin",new LocalStrategy({passReqToCallback:true}, async(req,username,password,done)=>{
+const signin = passport.use("signin",new LocalStrategy({passReqToCallback:true,usernameField:"email"}, async(req,email,password,done)=>{
     try{
         await connection.Connect();
-        await dao.readUsers(req.body.email,(user)=>{
+        await dao.readUsers(email,(user)=>{
             if(user.length > 0){
                 console.log(user);
                 return done(null,false,console.log("E-Mail already in use"));
             }else{
-                dao.saveUser(req.body.email,username,password,(save)=>{
+                const id = uniqid();
+                const {name,address,phone,prefix,age} = req.body;
+                dao.saveUser(id,email,password,name,address,age,prefix,phone,(save)=>{
                     return done(null,save);
                 });
             }
         });
-        await connection.Disconnect();
     }catch(error){
         console.log(error);
         return done(null,false);
+    }
+}));
+
+const login = passport.use("login",new LocalStrategy({usernameField:"email"},async(email,password,done)=>{
+    try{
+        await connection.Connect();
+        await dao.readUsers(email,(user)=>{
+            if(user.length > 0){
+                const user_password = user[0].password;
+                dao.validatePassword(password,user_password,(valid)=>{
+                    valid ? done(null,user[0]) : done(null,false,console.log("Invalid password"));
+                });
+            }else{
+                return done(null,false,console.log("Email not valid or account does not exist"));
+            }
+        });
+    }catch(error){
+        throw(error)
     }
 }));
 
@@ -33,7 +53,6 @@ passport.deserializeUser(async(id,done)=>{
         await dao.readUsers(id,(user)=>{
             return done(null,user);
         });
-        await connection.Disconnect();
     }catch(error){
         console.log(error);
         return done(null,false);
@@ -42,4 +61,5 @@ passport.deserializeUser(async(id,done)=>{
 
 export default {
 signin,
+login,
 }

@@ -13,6 +13,15 @@ const readProducts = async (id,cb)=>{
     }
 };
 
+const removeProduct = async(id)=>{
+    try{
+        await dao.removeProduct(id);
+    }catch(error){
+
+    }
+};
+
 export default {
     readProducts,
+    removeProduct
 };

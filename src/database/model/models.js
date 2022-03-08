@@ -1,10 +1,16 @@
 import mongoose from "mongoose";
 
 const user_schema = new mongoose.Schema({
-    name:{type:String,required:true},
+    uid:{type:String,required:true},
     email:{type:String,required:true},
     password:{type:String,required:true},
-    //avatar:{type:String,default:"profile.png"}
+    name:{type:String,required:true},
+    address:{type:String,required:true},
+    age:{type:Number,required:true},
+    prefix:{type:Number,required:true},
+    phone:{type:Number,required:true},
+    avatar:{type:String,default:"profile.png"},
+    admin:{type:Boolean,default:false}
 });
 
 const product_schema = new mongoose.Schema({

@@ -27,7 +27,7 @@ app.use(express.urlencoded({extended:true}));
 app.use(session({
     secret:key,
     store:mongo_store.create({
-        //ttl:60000,
+        ttl:60000,
         mongoUrl:uri,
     }),
     resave:false,

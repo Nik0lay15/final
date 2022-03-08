@@ -1,4 +1,5 @@
 import models from "./model/models.js";
+import bcrypt from "bcrypt";
 
 const {user_model,product_model,cart_model} = models;
 
@@ -18,14 +19,23 @@ class MongoDAO {
         }
     }
 
-    async saveUser(email,name,password,cb){
+    async validatePassword(login_password,user_password,cb){
         try{
-            const new_user = await models.user_model({email,name,password});
-            console.log("Nuew user",new_user);
+            const validation = await bcrypt.compare(login_password,user_password);
+            cb(validation);
+        }catch(error){
+            throw("Error while trying to fectch data from database",error);
+        }
+    }
+
+    async saveUser(uid,email,plain_password,name,address,age,prefix,phone,cb){
+        try{
+            const password = await bcrypt.hash(plain_password,10);
+            const new_user = await models.user_model({uid,email,password,name,address,age,prefix,phone});
             const save_user = await new_user.save();
             cb(save_user);
         }catch(error){
-
+            throw("Error while trying to fetch data from database",error);
         }
     }
 
@@ -38,6 +48,23 @@ class MongoDAO {
                 const products = await product_model.find({}).lean();
                 cb(products);
             }
+        }catch(error){
+            throw(error);
+        }
+    }
+
+    async removeProduct(id){
+        try{
+            await product_model.deleteOne({id:id});
+        }catch(error){
+            throw(error);
+        }
+    }
+
+    async readProfile(uid,cb){
+        try{
+            const user_profile = await user_model.find({uid:uid});
+            cb(user_profile);
         }catch(error){
             throw(error);
         }
