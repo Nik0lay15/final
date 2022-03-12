@@ -1,6 +1,7 @@
 {{>navbar user=user}}
+<button class="btn btn-primary"><a class="text-light" href="/../products/add">Add product</a></button>
 {{#each products}}
-    <form method="post" action="/products/remove/{{id}}">
+    <form method="post" action="/products/remove/{{pid}}">
         <img src="/products/{{image}}" alt="" srcset="">
         <h3><a href="../products/{{id}}">{{name}}</a></h3>
         <h4><i>{{description}}</i></h4>

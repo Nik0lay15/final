@@ -1,0 +1,17 @@
+{{>navbar user=user}}
+
+<form method="post" action="/../products/add">
+    <label htmlFor="name">Name</label>
+    <input type="text" name="name">
+
+    <label>Description</label>
+    <input type="text" name="description">
+
+    <label htmlFor="price">Price</label>
+    <input type="number" name="price">
+
+    <label htmlFor="stock">Stock</label>
+    <input type="number" name="stock">
+
+    <input class="btn btn-primary" type="submit" value="Submit">
+</form>

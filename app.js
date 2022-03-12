@@ -17,7 +17,7 @@ import error_route from "./src/routes/error-route.js";
 const app = express();
 const {serverStartUp} = server;
 const __dirname = process.cwd();
-const {key,uri,dbname} = cfg;
+const {key,uri} = cfg;
 
 serverStartUp(app);
 
@@ -31,7 +31,7 @@ app.use(session({
         mongoUrl:uri,
     }),
     resave:false,
-    saveUninitialized:true,
+    saveUninitialized:false,
 }));
 app.use(passport.initialize());
 app.use(passport.session());

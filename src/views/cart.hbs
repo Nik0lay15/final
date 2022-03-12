@@ -1,3 +1,19 @@
-{{#each products}}
+{{>navbar user=user}}
+{{#if products}}
+    {{#each products}}
+        <form method="post" action="/cart/delete?pid={{pid}}&cid={{../cartid}}">
+            <h1>{{name}}</h1>
+            <h4><b>{{price}} $</b></h4>
+            <input type="submit" value="delete" class="btn btn-danger">
+        </form>
+    {{/each}}
+    <h2>Total: {{total}}$</h2>
+    <form method="post" action="/cart/checkout/{{cartid}}">
+        <input type="submit" value="Go to checkout" class="btn btn-primary">
+    </form>
+{{else}}
+    <h1>Your cart is empty</h1>
+{{/if}}
 
-{{/each}}
+
+

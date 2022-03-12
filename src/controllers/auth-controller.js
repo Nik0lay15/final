@@ -17,12 +17,11 @@ const signIn = async(req,res)=>{
 const logOut = async(req,res)=>{
     try{
         if(req.isAuthenticated()){
-            console.log("Autenticado");
             await req.logOut();
             await req.session.destroy();
-            res.redirect("/");
+            res.redirect("/home");
         }else{
-            res.redirect("/");
+            res.redirect("/home");
         }
     }catch(error){
         

@@ -61,10 +61,80 @@ class MongoDAO {
         }
     }
 
+    async addProduct(pid,name,description,timestamp,price,stock){
+        try{
+            await product_model.insertMany({
+                pid:pid,
+                name:name,
+                description:description,
+                timestamp:timestamp,
+                price:price,
+                stock:stock
+            });
+        }catch(error){
+            throw(error);
+        }
+    }
+
     async readProfile(uid,cb){
         try{
             const user_profile = await user_model.find({uid:uid});
             cb(user_profile);
+        }catch(error){
+            throw(error);
+        }
+    }
+
+    async updateAvatar(uid,filename){
+        try{
+            await user_model.updateOne({uid:uid},{avatar:filename});
+        }catch(error){
+            throw(error);
+        }
+    }
+
+    async searchCart(uid,cb){
+        try{
+            const cart = await cart_model.find({user:uid}).lean();
+            cb(cart);
+        }catch(error){
+            throw(error);
+        }
+    }
+
+    async searchProdcutsCart(list,cb){
+        try{
+            const products = await product_model.find({pid:{$in:list}}).lean();
+            cb(products);
+        }catch(error){
+            throw(error);
+        }
+    }
+
+    async updateCartProducts(id,products_list){
+        try{
+            await cart_model.updateOne({id:id},{products:products_list});
+        }catch(error){
+            throw(error);
+        }
+    }
+
+    async createCart(user,products_list,id,timestamp){
+        try{
+            await cart_model.insertMany({
+                id:id,
+                timestamp:timestamp,
+                products:products_list,
+                user:user
+            })
+        }catch(error){
+            throw(error);
+        }
+    }
+
+    async deleteProductCart(cid,pid){
+        try{
+
         }catch(error){
             throw(error);
         }
