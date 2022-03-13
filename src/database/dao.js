@@ -139,6 +139,14 @@ class MongoDAO {
             throw(error);
         }
     }
+
+    async deleteCart(uid){
+        try{
+            await cart_model.deleteMany({user:uid});
+        }catch(error){
+            throw(error);
+        }
+    }
 }
 
 export default new MongoDAO;

@@ -1,6 +1,10 @@
 import dao from "../database/dao.js"
 import uniqid from "uniqid";
 import connection from "../database/connection.js";
+import mailer from "../subscriptions/mailer.js";
+import twi from "../subscriptions/twi_messager.js";
+
+const {sendMail} = mailer;
 
 const getCart = async(uid,cb)=>{
     try{
@@ -55,9 +59,35 @@ const deleteFromCart = async(cid,pid,uid)=>{
         await connection.Connect();
         await dao.searchCart(uid,(cart)=>{
             const new_products_list = cart[0].products.filter(e => e != pid);
-            dao.updateCartProducts(cid,new_products_list); 
+            if(new_products_list.length == 0){
+                dao.deleteCart(uid);
+            }else{
+                dao.updateCartProducts(cid,new_products_list); 
+            }
         });
     }catch(error){
+        throw(error);
+    }
+};
+
+const notifyCart = async(uid,name,email,prefix,phone)=>{
+    try{
+        await connection.Connect();
+        await dao.searchCart(uid,(cart)=>{
+            const products_list = cart[0].products;
+            dao.searchProdcutsCart(products_list,(cart_products)=>{
+                let message_products = "";
+                cart_products.forEach((e)=>{
+                    message_products = message_products +e.name+", "
+                });
+                console.log("message:",message_products);
+                mailer(name,email,message_products);
+                twi(name,email,message_products,prefix,phone);
+            });
+        });
+        await dao.deleteCart(uid);
+    }catch(error){
+        console.log(error);
         throw(error);
     }
 };
@@ -67,4 +97,5 @@ export default {
     addProductCart,
     createCart,
     deleteFromCart,
+    notifyCart
 }
