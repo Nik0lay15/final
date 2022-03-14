@@ -25,7 +25,6 @@ const product_schema = new mongoose.Schema({
 
 const shop_cart_schema = new mongoose.Schema({
     id:{type:String,required:true},
-    //status:{type:Boolean,required:true},
     timestamp:{type:Number,required:true},
     products:[{type:String}],
     user:{type:String}

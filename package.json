@@ -5,8 +5,10 @@
   "description": "Ecommerce para como trabajo final del curso backend",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=production node app",
-    "test": "NODE_ENV=development nodemon app --port 8080"
+    "start": "NODE_ENV=production node app --mode cluster",
+    "start_fork":"NODE_ENV=production node app --mode fork",
+    "test_cluster": "NODE_ENV=development nodemon app --port 8080 --mode cluster",
+    "test_fork":"NODE_ENV=development nodemon app --port 8080 --mode fork"
   },
   "author": "Manuel Tello Siri",
   "license": "ISC",

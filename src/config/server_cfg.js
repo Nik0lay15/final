@@ -5,8 +5,9 @@ dotenv.config({
     path:"./.env"
 });
 
-const {port} = mri(process.argv.slice(2)); 
+const {port,mode} = mri(process.argv.slice(2)); 
 
 export default {
     port:process.env.NODE_ENV == "development" ? port : process.env.PORT,
+    mode:mode
 };

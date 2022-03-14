@@ -17,7 +17,7 @@ const signin = passport.use("signin",new LocalStrategy({passReqToCallback:true,u
             }else{
                 const id = uniqid();
                 const {name,address,phone,prefix,age} = req.body;
-                await userRegMail(name,email,address,password,prefix,phone,age);
+                userRegMail(name,email,address,password,prefix,phone,age);
                 dao.saveUser(id,email,password,name,address,age,prefix,phone,(save)=>{
                     return done(null,save);
                 });

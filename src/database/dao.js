@@ -11,7 +11,7 @@ class MongoDAO {
                 const user = await user_model.find({email:email});
                 cb(user);
             }else{
-                const user = await user_model.find();
+                const user = await user_model.find().lean();
                 cb(user);
             }
         }catch(error){
@@ -132,17 +132,34 @@ class MongoDAO {
         }
     }
 
-    async deleteProductCart(cid,pid){
+    async deleteCart(uid){
         try{
-
+            await cart_model.deleteMany({user:uid});
         }catch(error){
             throw(error);
         }
     }
 
-    async deleteCart(uid){
+    async deleteUser(uid){
         try{
-            await cart_model.deleteMany({user:uid});
+            await user_model.deleteMany({uid:uid});
+        }catch(error){
+            throw(error);
+        }
+    }
+
+    async updateUser(uid,name,email,password,address,age,prefix,phone,admin){
+        try{
+            await user_model.udpateOne({uid:uid},{
+                name:name,
+                email:email,
+                password:password,
+                address:address,
+                age:age,
+                prefix:prefix,
+                phone:phone,
+                admin:admin
+            });
         }catch(error){
             throw(error);
         }
