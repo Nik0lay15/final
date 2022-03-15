@@ -1,4 +1,4 @@
 export default {
-    sid:process.env.TW_SID,
-    token:process.env.TW_TOKEN,
+    sid:process.env.TWILIO_ACCOUNT_SID,
+    token:process.env.TWILIO_AUTH_TOKEN,
 };
