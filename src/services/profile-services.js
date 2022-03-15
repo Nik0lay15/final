@@ -14,6 +14,7 @@ const searchProfile = async(uid,cb)=>{
         });
         await connection.Disconnect();
     }catch(error){
+        console.log("Error search",error);
         throw(error);
     }
 }
@@ -26,6 +27,7 @@ const getProfiles = async(cb)=>{
         });
         await connection.Disconnect();
     }catch(error){
+        console.log("Error getProfiles",error);
         throw(error);
     }
 };

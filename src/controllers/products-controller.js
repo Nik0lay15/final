@@ -1,6 +1,6 @@
 import product_services from "../services/product-services.js";
 
-const {readProducts,removeProduct,addProduct} = product_services;
+const {readProducts,removeProduct,addProduct,updateProductData} = product_services;
 
 const viewProduct = async(req,res)=>{
     try{
@@ -37,7 +37,11 @@ const viewProduct = async(req,res)=>{
             }
         });
     }catch(error){
-        throw(error);
+        res.status(404).render("error",{
+            title:"Error",
+            status_code:404,
+            message:"Could not process your request"
+        });
     }
 };
 
@@ -48,7 +52,11 @@ const editProducts = async(req,res)=>{
             res.status(200).render("edit",{title:"Edit products",products,name,avatar,admin,uid});
         });
     }catch(error){
-        throw(error);
+        res.status(404).render("error",{
+            title:"Error",
+            status_code:404,
+            message:"Could not process your request"
+        });
     }
 };
 
@@ -58,7 +66,11 @@ const deleteProduct = async(req,res)=>{
         await removeProduct(pid);
         await res.redirect("/products/edit");
     }catch(error){
-        throw(error);
+        res.status(404).render("error",{
+            title:"Error",
+            status_code:404,
+            message:"Could not process your request"
+        });
     }
 };
 
@@ -67,7 +79,63 @@ const showAddProduct = async(req,res)=>{
         const {name,avatar,admin,uid} = req.user[0];
         await res.render("addproduct",{title:"Add new product",name,avatar,admin,uid});
     }catch(error){
-        throw(error);
+        res.status(404).render("error",{
+            title:"Error",
+            status_code:404,
+            message:"Could not process your request"
+        });
+    }
+};
+
+const editorProduct = async(req,res)=>{
+    try{
+        const pid = req.params.pid;
+
+        await readProducts(pid,(product)=>{
+            if(product.length > 0){
+                const {name,admin} = req.user[0];
+
+                res.status(200).render("product-edit",{
+                    title:`Edit ${product[0].name}`,
+                    user:req.user[0],
+                    name,
+                    admin,
+                    pid,
+                    prod_name:product[0].name,
+                    prod_desc:product[0].description,
+                    prod_price:product[0].price,
+                    prod_stock:product[0].stock,
+                });
+            }else{
+                res.status(404).render("error",{
+                    title:"Product not found",
+                    statu_code:404,
+                    message:"Product not found"
+                });
+            }
+        });
+    }catch(error){
+        res.status(404).render("error",{
+            title:"Error",
+            status_code:404,
+            message:"Could not process your request"
+        });
+    }
+};
+
+const  editProduct = async(req,res)=>{
+    try{
+        const pid = req.params.pid;
+        const {name,description,price,stock} = req.body;
+
+        await updateProductData(pid,name,description,stock,price);
+        res.redirect("../edit");
+    }catch(error){
+        res.status(404).render("error",{
+            title:"Error",
+            status_code:404,
+            message:"Could not process your request"
+        });
     }
 };
 
@@ -76,7 +144,11 @@ const addNewProduct = async(req,res)=>{
         await addProduct(req.body);
         res.redirect("../products/edit");
     }catch(error){
-        throw(error);
+        res.status(404).render("error",{
+            title:"Error",
+            status_code:404,
+            message:"Could not process your request"
+        });
     }
 };
 
@@ -93,6 +165,8 @@ export default {
     editProducts,
     deleteProduct,
     showAddProduct,
+    editorProduct,
+    editProduct,
     checkAdmin,
     checkAdmin,
     addNewProduct

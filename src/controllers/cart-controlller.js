@@ -27,7 +27,6 @@ const getListCart = async(req,res) =>{
 
         });
     }catch(error){
-        console.log(error);
         res.status(404).render("error",{
             title:"Error",
             status_code:404,
@@ -69,8 +68,7 @@ const deleteProduct = async(req,res)=>{
         await deleteFromCart(cid,pid,uid);
         res.redirect("/cart");
     }catch(error){
-        console.log(error);
-       res.render("error",{
+        res.status(404).render("error",{
            title:"Error",
            status_code:404,
            message:"Could not process your request"

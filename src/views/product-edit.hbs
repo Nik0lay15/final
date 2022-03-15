@@ -1,0 +1,17 @@
+{{>navbar user=user}}
+
+<form method="post" action="/products/edit/{{pid}}">
+    <label for="name">Name:</label>
+    <input type="text" name="name" value={{prod_name}}>
+    
+    <label for="description">Description:</label>
+    <input type="text" name="description" value={{prod_desc}}>
+
+    <label for="price">Price:</label>
+    <input type="number" name="price" value={{prod_price}}>
+
+    <label for="stock">Stock:</label>
+    <input type="number" name="stock" value={{prod_stock}}>
+
+    <input clas="btn btn-primary" type="submit" value="Save changes">
+</form>

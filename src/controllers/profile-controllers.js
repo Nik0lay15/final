@@ -12,7 +12,15 @@ const showProfile = async(req,res)=>{
                 if(req.isAuthenticated() && req.user[0].uid == profile.uid){
                     const {name,email,admin} = profile;
                     const check = profile.uid == req.user[0].uid ? true : false;
-                    res.status(200).render("profile",{title:`Profile:${profile.name}`,user:profile,name,email,uid,admin,check});
+                    res.status(200).render("profile",{title:`Profile:${profile.name}`,user:profile,name,email,uid,admin,check,
+                        profile_name:profile.name,
+                        profile_email:profile.email,
+                        profile_address:profile.address,
+                        profile_age:profile.age,
+                        profile_prefix:profile.prefix,
+                        profile_phone:profile.phone,
+                        profile_admin:profile.admin,
+                });
                 }else{
                     res.status(200).render("profile",{title:`Profile:${profile.name}`,user:profile,name:profile.name,email:profile.email});
                 }
@@ -26,7 +34,11 @@ const showProfile = async(req,res)=>{
         });
         await connection.Disconnect();
     }catch(error){
-        throw(error);
+        res.status(404).render("error",{
+            title:"Error",
+            status_code:404,
+            message:"Could not process your request"
+        });
     }
 };
 
@@ -38,25 +50,29 @@ const changeAvatar = async(req,res)=>{
             res.redirect("/");
         }
     }catch(error){
-        throw(error);
+        res.status(404).render("error",{
+            title:"Error",
+            status_code:404,
+            message:"Could not process your request"
+        });
     }
 };
 
 const listProfiles = async(req,res)=>{
     try{
-        const {name,admin} = req.user[0];
+        const {name,admin,uid} = req.user[0];
 
         await getProfiles((profiles)=>{
             res.status(200).render("profile-list",{
                 title:"Edit profiles",
                 user:req.user[0],
                 admin,
+                uid,
                 name,
                 profiles
             });
         });
     }catch(error){
-        console.log(error);
         res.render("error",{
             title:"Error",
             status_code:404,
@@ -70,8 +86,8 @@ const  editProfile = async(req,res)=>{
         const {uid} = req.params;
         await searchProfile(uid,(profile)=>{
             if(profile){
-                const {admin,name} = req.user[0];
-
+                const {uid,admin,name} = req.user[0];
+                console.log(profile)
                 res.status(200).render("profile-edit",{
                     title:"Edit profile",
                     user:req.user[0],
@@ -98,7 +114,7 @@ const  editProfile = async(req,res)=>{
             title:"Error",
             status_code:404,
             message:"Could not process your request"
-        })
+        });
     }
 };
 

@@ -3,7 +3,7 @@
 {{#each products}}
     <form method="post" action="/products/remove/{{pid}}">
         <img src="/products/{{image}}" alt="" srcset="">
-        <h3><a href="../products/{{id}}">{{name}}</a></h3>
+        <h3><a href="../products/edit/{{pid}}">{{name}}</a></h3>
         <h4><i>{{description}}</i></h4>
         <b>${{price}}</b>
         <input type="submit" class="btn btn-danger" value="Delete">

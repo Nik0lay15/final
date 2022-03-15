@@ -1,6 +1,6 @@
 {{>navbar user=user}}
 
-<img src="/profile/{{profile_avatar}}">
+<img src="profile/{{profile_avatar}}">
 {{#if check}}
     <form action="/../profile" method="post" enctype="multipart/form-data">
       <input type="file" name="avatar" />
@@ -8,11 +8,15 @@
     </form>
 {{/if}}
 
-<h1>{{profile_email}}</h1>
-<h1>{{profile_name}}</h1>
-<h1>{{profile_address}}</h1>
-<h1>{{profile_age}}</h1>
-<h1>{{profile_prefix}}</h1>
-<h1>{{profile_phone}}</h1>
- 
-<button class="btn btn-primary"><a class="text-light" href="/profile/edit/{{profile_uid}}">Edit profile</a></button>
+<h1>Name:</h1>
+<h3>{{profile_name}}</h3>
+<h1>Email:</h1>
+<h3>{{profile_email}}</h3>
+<h1>Address:</h1>
+<h3>{{profile_address}}</h3>
+<h1>Age:</h1>
+<h3>{{profile_age}}</h3>
+<h1>Phone prefix:</h1>
+<h3>{{profile_prefix}}</h3>
+<h1>Phone number</h1>
+<h3>{{profile_phone}}</h3>

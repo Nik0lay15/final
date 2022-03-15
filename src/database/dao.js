@@ -164,6 +164,19 @@ class MongoDAO {
             throw(error);
         }
     }
+
+    async updateProduct(pid,name,des,stock,price){
+        try{
+            await product_model.updateOne({pid:pid},{
+                name:name,
+                description:des,
+                price:price,
+                stock:stock
+            });
+        }catch(error){
+            throw(error);
+        }
+    }
 }
 
 export default new MongoDAO;

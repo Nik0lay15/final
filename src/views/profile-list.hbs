@@ -1,7 +1,7 @@
 {{>navbar user=user}}
 
 {{#each profiles}}
-    <form method="post" actio="/profile/delete/{{uid}}">
+    <form method="post" actio="/profile/delete/{{../uid}}">
         <img src="profile/{{avatar}}"/>
         <h2><a href="/profile/edit/{{uid}}">{{name}}</a></h2>
         <h3>{{email}}</h3>
@@ -9,3 +9,4 @@
         <input class="btn btn-danger" type="submit" value="Delete"/>
     </form>
 {{/each}}
+

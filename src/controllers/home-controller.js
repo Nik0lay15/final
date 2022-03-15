@@ -13,7 +13,11 @@ const homePage = async(req,res)=>{
             }
         });
     }catch(error){
-        res.status(404).render("error",{title:"Error",status_code:404,message:"An error has ocurred"});
+        res.status(404).render("error",{
+            title:"Error",
+            status_code:404,
+            message:"Could not process your request"
+        });
     }
 };
 

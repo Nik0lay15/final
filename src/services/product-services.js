@@ -10,7 +10,7 @@ const readProducts = async (id,cb)=>{
         });
         await connection.Disconnect();
     }catch(error){
-        throw(error)
+        throw(error);
     }
 };
 
@@ -29,7 +29,7 @@ const addProduct = async(body)=>{
         const pid = uniqid();
         const timestamp = Date.now();
         const {name,description,price,stock} = body;
-        await connection.Connectp();
+        await connection.Connect();
         await dao.addProduct(pid,name,description,timestamp,price,stock);
         await connection.Disconnect();
     }catch(error){
@@ -37,8 +37,19 @@ const addProduct = async(body)=>{
     }
 };
 
+const updateProductData = async(pid,name,desc,stock,price)=>{
+    try{
+        await connection.Connect();
+        await dao.updateProduct(pid,name,desc,stock,price);
+        await connection.Disconnect();
+    }catch(error){
+        throw(error);
+    }
+}
+
 export default {
     readProducts,
     removeProduct,
+    updateProductData,
     addProduct
 };
